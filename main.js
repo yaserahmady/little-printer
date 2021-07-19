@@ -32,10 +32,7 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
   const paper =
     model.children[0].children[0].children[0].children[0].children[1]
   // paper = modelSiblings.find((el) => el.name === 'Paper')
-  console.log(paper)
-  paper.visible = false
   model.scale.set(0.75, 0.75, 0.75)
-  console.log(Bounce)
   scene.add(model)
 
   model.castShadow = true
@@ -53,13 +50,23 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
     y: -0.13,
     z: -2.3
   })
-})
 
-// Object
-const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial()
-const mesh = new THREE.Mesh(geometry, material)
-// scene.add(mesh)
+  const drawingCanvas = document.getElementById('drawing-canvas')
+  const drawingContext = drawingCanvas.getContext('2d')
+  var grd = drawingContext.createLinearGradient(0, 180, 0, 0)
+  grd.addColorStop(0, 'black')
+  grd.addColorStop(1, 'white')
+
+  drawingContext.fillStyle = grd
+  drawingContext.fillRect(0, 0, 128, 128)
+
+  console.log(gltf)
+  gltf.parser.getDependencies('material').then((materials) => {
+    const paperMaterial = materials[3]
+    paperMaterial.alphaMap = new THREE.CanvasTexture(drawingCanvas)
+    console.log(paperMaterial)
+  })
+})
 
 // Cursor
 const cursor = {
