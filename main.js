@@ -25,14 +25,15 @@ const fontLoader = new THREE.FontLoader()
 /*  Models */
 const gltfLoader = new GLTFLoader()
 
-let paper
-
 let tl = gsap.timeline({ defaults: { duration: 3, ease: Bounce.easeOut } })
 
 gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
   const model = gltf.scene.children[0]
-  const modelSiblings = model.children[0].children[0].children[0].children
-  paper = modelSiblings.find((el) => el.name === 'Paper')
+  const paper =
+    model.children[0].children[0].children[0].children[0].children[1]
+  // paper = modelSiblings.find((el) => el.name === 'Paper')
+  console.log(paper)
+  paper.visible = false
   model.scale.set(0.75, 0.75, 0.75)
   console.log(Bounce)
   scene.add(model)
