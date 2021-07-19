@@ -1,0 +1,17 @@
+{
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^2.4.2"
+  },
+  "dependencies": {
+    "animejs": "^3.2.1",
+    "dat.gui": "^0.7.7",
+    "gsap": "^3.7.0",
+    "three": "^0.130.1"
+  }
+}
