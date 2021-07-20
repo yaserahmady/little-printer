@@ -1,5 +1,6 @@
 body {
   background-color: #d7efff;
+  overflow-x: hidden;
 }
 #drawing-canvas {
   position: absolute;
@@ -9,3 +10,10 @@ body {
   z-index: 3000;
   touch-action: none;
 }
+
+/* main {
+  width: 289px;
+  transform: translate(0px, -944px);
+  position: absolute;
+  left: 43%;
+} */

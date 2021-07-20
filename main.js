@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { gsap, Elastic } from 'gsap'
+import { gsap, Elastic, Power4 } from 'gsap'
 import anime from 'animejs/lib/anime.es.js'
 
 var alphaOne = 1.0
@@ -41,7 +41,7 @@ const gltfLoader = new GLTFLoader()
 
 let tl = gsap.timeline()
 
-gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
+gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
   const model = gltf.scene.children[0]
   const paper =
     model.children[0].children[0].children[0].children[0].children[1]
@@ -54,7 +54,7 @@ gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
   const shadowMesh = new THREE.CircleGeometry(3, 128)
 
   const shadowMaterial = new THREE.MeshBasicMaterial({
-    map: loader.load('public/little_printer/textures/shadow.png'),
+    map: loader.load('assets/little_printer/textures/shadow.png'),
     depthWrite: false
   })
   shadowMaterial.transparent = true
@@ -92,13 +92,17 @@ gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
       },
       '<'
     )
-    .to(camera.position, {
-      x: 1,
-      y: 0.7,
-      z: 5.4,
-      duration: 1.4,
-      ease: Elastic.easeOut.config(1, 0.4)
-    })
+    .to(
+      camera.position,
+      {
+        x: 1,
+        y: 0.7,
+        z: 5.4,
+        duration: 1.4,
+        ease: Elastic.easeOut.config(1, 0.4)
+      },
+      '-=1.3'
+    )
     .to(
       model.position,
       {
@@ -109,6 +113,28 @@ gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
         ease: Elastic.easeOut.config(1, 0.4)
       },
       '<'
+    )
+    .to(
+      camera.position,
+      {
+        x: 0.29,
+        y: 2.5,
+        z: 8.9,
+        duration: 1.4,
+        ease: Power4.easeOut
+      },
+      '<'
+    )
+    .to(
+      model.scale,
+      {
+        x: 1.25,
+        y: 1.25,
+        z: 1.25,
+        duration: 1.5,
+        ease: Power4.easeInOut
+      },
+      '-=1'
     )
     .to(gradientParams, { position: 0, duration: 2, ease: 'expo.in' })
     .to(
