@@ -14,3 +14,12 @@ body {
   left: 0;
   outline: none;
 }
+
+#drawing-canvas {
+  position: absolute;
+  background-color: #000000;
+  top: 0px;
+  left: 0px;
+  z-index: 3000;
+  touch-action: none;
+}

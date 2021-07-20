@@ -3,8 +3,11 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { gsap, Bounce } from 'gsap'
+import { gsap, Bounce, Linear, Power4 } from 'gsap'
 import anime from 'animejs/lib/anime.es.js'
+
+var alphaOne = 1.0
+var alphaTwo = 0.2
 // Canvas
 const canvas = document.querySelector('.webgl')
 
@@ -15,10 +18,19 @@ const gui = new dat.GUI({ closed: true })
 const scene = new THREE.Scene()
 
 // const OrbitControls = THREE.OrbitControls;
-
 // Texture
 const textureLoader = new THREE.TextureLoader()
 
+let gradientParams = {
+  position: 1.0
+}
+const drawingCanvas = document.getElementById('drawing-canvas')
+drawingCanvas.style.display = 'none'
+const drawingContext = drawingCanvas.getContext('2d')
+let paperMaterial = new THREE.MeshBasicMaterial()
+paperMaterial.alphaMap = new THREE.CanvasTexture(drawingCanvas)
+paperMaterial.transparent = true
+updateGrad(gradientParams.position)
 // Fonts
 const fontLoader = new THREE.FontLoader()
 
@@ -31,6 +43,7 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
   const model = gltf.scene.children[0]
   const paper =
     model.children[0].children[0].children[0].children[0].children[1]
+
   // paper = modelSiblings.find((el) => el.name === 'Paper')
   model.scale.set(0.75, 0.75, 0.75)
   scene.add(model)
@@ -38,6 +51,7 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
   model.castShadow = true
   model.receiveShadow = true
 
+  gui.add(gradientParams, 'position').min(0.0).max(1.0).step(0.001)
   gui.add(camera.rotation, 'x').min(-20).max(20).step(0.001).name('X Cam')
   gui.add(camera.rotation, 'y').min(-20).max(20).step(0.001).name('Y Cam')
   gui.add(camera.rotation, 'z').min(-20).max(20).step(0.001).name('Z Cam')
@@ -50,24 +64,30 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
     y: -0.13,
     z: -2.3
   })
+    .to(camera.position, {
+      x: 0.3,
+      y: 0.7,
+      z: 5.4,
+      duration: 1.4,
+      ease: Power4.easeIn
+    })
+    .to(gradientParams, { position: 0, duration: 5, ease: Linear.easeNone })
 
-  const drawingCanvas = document.getElementById('drawing-canvas')
-  const drawingContext = drawingCanvas.getContext('2d')
-  var grd = drawingContext.createLinearGradient(0, 180, 0, 0)
-  grd.addColorStop(0, 'black')
-  grd.addColorStop(1, 'white')
-
-  drawingContext.fillStyle = grd
-  drawingContext.fillRect(0, 0, 128, 128)
-
-  console.log(gltf)
-  gltf.parser.getDependencies('material').then((materials) => {
-    const paperMaterial = materials[3]
-    paperMaterial.alphaMap = new THREE.CanvasTexture(drawingCanvas)
-    console.log(paperMaterial)
+  model.traverse((o) => {
+    if (o.name == 'Receipt_Mask_0') {
+      o.material = paperMaterial
+    }
   })
 })
 
+function updateGrad(position) {
+  const grad = drawingContext.createLinearGradient(0, 180, 0, 0)
+  grad.addColorStop(position, 'black')
+  grad.addColorStop(position, 'white')
+  drawingContext.fillStyle = grad
+  drawingContext.fillRect(0, 0, 128, 128)
+  paperMaterial.alphaMap.needsUpdate = true
+}
 // Cursor
 const cursor = {
   x: 0,
@@ -94,7 +114,6 @@ const sizes = {
   width: window.innerWidth,
   height: window.innerHeight
 }
-
 window.addEventListener('resize', () => {
   sizes.width = window.innerWidth
   sizes.height = window.innerHeight
@@ -103,7 +122,6 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix()
   //update renderer
   renderer.setSize(sizes.width, sizes.height)
-
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
@@ -137,6 +155,7 @@ const tick = () => {
 
   controls.update()
   // Render
+  updateGrad(gradientParams.position)
   renderer.render(scene, camera)
   window.requestAnimationFrame(tick)
 }
