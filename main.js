@@ -41,7 +41,7 @@ const gltfLoader = new GLTFLoader()
 
 let tl = gsap.timeline()
 
-gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
+gltfLoader.load('/assets/little_printer/scene.gltf', (gltf) => {
   const model = gltf.scene.children[0]
   const paper =
     model.children[0].children[0].children[0].children[0].children[1]
@@ -54,7 +54,7 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
   const shadowMesh = new THREE.CircleGeometry(3, 128)
 
   const shadowMaterial = new THREE.MeshBasicMaterial({
-    map: loader.load('assets/little_printer/textures/shadow.png'),
+    map: loader.load('assets/little_printer/shadow.png'),
     depthWrite: false
   })
   shadowMaterial.transparent = true
