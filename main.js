@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { gsap, Elastic, Power4 } from 'gsap'
+import { gsap, Elastic, Power4, Linear } from 'gsap'
 import anime from 'animejs/lib/anime.es.js'
 
 var alphaOne = 1.0
@@ -67,7 +67,7 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
   model.receiveShadow = true
 
   gui.add(gradientParams, 'position').min(0.0).max(1.0).step(0.001)
-  gui.add(camera.rotation, 'x').min(-20).max(20).step(0.001).name('X Cam')
+  gui.add(model.position, 'x').min(-20).max(20).step(0.001).name('X Cam')
   gui.add(camera.rotation, 'y').min(-20).max(20).step(0.001).name('Y Cam')
   gui.add(camera.rotation, 'z').min(-20).max(20).step(0.001).name('Z Cam')
   gui.add(camera.position, 'x').min(-20).max(20).step(0.001).name('X Cam')
@@ -95,7 +95,6 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
     .to(
       camera.position,
       {
-        x: 1,
         y: 0.7,
         z: 5.4,
         duration: 1.4,
@@ -106,7 +105,7 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
     .to(
       model.position,
       {
-        x: 0.41,
+        x: 0.1,
         y: model.position.y,
         z: model.position.z,
         duration: 1.4,
@@ -128,9 +127,9 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
     .to(
       model.scale,
       {
-        x: 1.25,
-        y: 1.25,
-        z: 1.25,
+        x: 2,
+        y: 2,
+        z: 2,
         duration: 1.5,
         ease: Power4.easeInOut
       },
@@ -140,7 +139,7 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
     .to(
       model.position,
       {
-        x: 0.41,
+        x: 0.1,
         y: 8.3,
         z: model.position.z,
         duration: 3,
@@ -166,6 +165,7 @@ gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
       },
       '<'
     )
+    .to(paper.scale, { y: 4, duration: 1.3, ease: Linear.easeNone })
 
   let whiteButtonMaterial = new THREE.MeshToonMaterial({
     color: 0xffffff
@@ -217,9 +217,9 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.75)
 scene.add(ambientLight)
 
 const pointLight = new THREE.PointLight(0xffffff, 0.5)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
+pointLight.position.x = 4
+pointLight.position.y = 5
+pointLight.position.z = 8
 scene.add(pointLight)
 pointLight.castShadow = true
 
