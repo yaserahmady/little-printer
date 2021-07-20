@@ -113,7 +113,7 @@ window.addEventListener('mousemove', (evt) => {
 })
 
 /* Lights */
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.75)
 scene.add(ambientLight)
 
 const pointLight = new THREE.PointLight(0xffffff, 0.5)
@@ -128,6 +128,7 @@ const sizes = {
   width: window.innerWidth,
   height: window.innerHeight
 }
+
 window.addEventListener('resize', () => {
   sizes.width = window.innerWidth
   sizes.height = window.innerHeight
