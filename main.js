@@ -39,7 +39,7 @@ const gltfLoader = new GLTFLoader()
 
 let tl = gsap.timeline({ defaults: { duration: 3, ease: Bounce.easeOut } })
 
-gltfLoader.load('assets/little_printer/scene.gltf', (gltf) => {
+gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
   const model = gltf.scene.children[0]
   const paper =
     model.children[0].children[0].children[0].children[0].children[1]
