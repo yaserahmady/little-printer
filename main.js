@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { gsap, Bounce, Linear, Power4 } from 'gsap'
+import { gsap, Elastic } from 'gsap'
 import anime from 'animejs/lib/anime.es.js'
 
 var alphaOne = 1.0
@@ -34,10 +34,10 @@ updateGrad(gradientParams.position)
 // Fonts
 const fontLoader = new THREE.FontLoader()
 
-/*  Models */
+/* Models */
 const gltfLoader = new GLTFLoader()
 
-let tl = gsap.timeline({ defaults: { duration: 3, ease: Bounce.easeOut } })
+let tl = gsap.timeline()
 
 gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
   const model = gltf.scene.children[0]
@@ -59,19 +59,32 @@ gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
   gui.add(camera.position, 'y').min(-20).max(20).step(0.001).name('Y Cam')
   gui.add(camera.position, 'z').min(-20).max(20).step(0.001).name('Z Cam')
 
-  tl.from(model.position, {
-    x: 14,
-    y: -0.13,
-    z: -2.3
+  tl.from(model.rotation, {
+    x: model.rotation.x,
+    y: model.rotation.y,
+    z: -2,
+    duration: 3,
+    ease: Elastic.easeOut.config(1, 0.5)
   })
+    .from(
+      model.position,
+      {
+        x: 10,
+        y: model.position.y,
+        z: model.position.z,
+        duration: 3,
+        ease: Elastic.easeOut.config(1, 0.4)
+      },
+      '<'
+    )
     .to(camera.position, {
       x: 0.3,
       y: 0.7,
       z: 5.4,
       duration: 1.4,
-      ease: Power4.easeIn
+      ease: 'expo.in'
     })
-    .to(gradientParams, { position: 0, duration: 5, ease: Linear.easeNone })
+    .to(gradientParams, { position: 0, duration: 3, ease: 'expo.in' })
 
   model.traverse((o) => {
     if (o.name == 'Receipt_Mask_0') {
