@@ -87,9 +87,29 @@ gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
     })
     .to(gradientParams, { position: 0, duration: 3, ease: 'expo.in' })
 
+  let whiteButtonMaterial = new THREE.MeshToonMaterial({
+    color: 0xffffff
+  })
+  let legMaterial = new THREE.MeshToonMaterial({
+    color: 0xfd591a
+  })
+
+  let plateMaterial = new THREE.MeshToonMaterial({
+    color: 0x97a0a8
+  })
+
   model.traverse((o) => {
+    console.log(o.name)
     if (o.name == 'Receipt_Mask_0') {
       o.material = paperMaterial
+    } else if (o.name == 'Plate_Plate_0') {
+      o.material = plateMaterial
+    } else if (o.name == 'Body_White_Plastic_0') {
+      o.material = whiteButtonMaterial
+    } else if (
+      ['Leg_Orange_Plastic_0', 'Leg_2_Orange_Plastic_0'].indexOf(o.name) >= 0
+    ) {
+      o.material = legMaterial
     }
   })
 })
