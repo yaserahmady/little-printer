@@ -46,6 +46,7 @@ gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
 
   // paper = modelSiblings.find((el) => el.name === 'Paper')
   model.scale.set(0.75, 0.75, 0.75)
+  model.position.y = -1.4
   scene.add(model)
 
   model.castShadow = true
@@ -131,22 +132,32 @@ window.addEventListener('resize', () => {
   sizes.width = window.innerWidth
   sizes.height = window.innerHeight
   camera.aspect = sizes.width / sizes.height
-  //when changing properties like aspect, we need to call camera.updateProjectionMatrix()
+  // update the camera
+  camera.left = sizes.width / -2
+  camera.right = sizes.width / 2
+  camera.top = sizes.height / 2
+  camera.bottom = sizes.height / -2
   camera.updateProjectionMatrix()
+
   //update renderer
   renderer.setSize(sizes.width, sizes.height)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 // Camera
-const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  0.1,
-  100
+const camera = new THREE.OrthographicCamera(
+  sizes.width / -2,
+  sizes.width / 2,
+  sizes.height / 2,
+  sizes.height / -2,
+  0.5,
+  500
 )
 
+camera.zoom = 100.0
 camera.position.set(1.59, 3.3, 5.4)
+camera.updateProjectionMatrix()
+
 scene.add(camera)
 const renderer = new THREE.WebGLRenderer({
   canvas
