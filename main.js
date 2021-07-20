@@ -167,6 +167,7 @@ gltfLoader.load('/assets/little_printer/scene.gltf', (gltf) => {
       '<'
     )
     .to(paper.scale, { y: 4, duration: 1.3, ease: Linear.easeNone })
+    .to(model, { visible: false }, '-=0.5')
 
   let whiteButtonMaterial = new THREE.MeshToonMaterial({
     color: 0xffffff

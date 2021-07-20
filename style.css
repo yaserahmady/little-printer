@@ -17,3 +17,132 @@ body {
   position: absolute;
   left: 43%;
 } */
+
+
+#svg-stash{
+  display:none;
+}
+
+svg.sparkle{
+  width:50px;
+  height:50px;
+  position:absolute;
+  top:50px;
+  left:50%;
+  transform:translate(-50%, -50%);
+  z-index:9999;
+  pointer-events:none;
+}
+
+svg.sparkle use{
+  transform-origin:50% 50% 0;
+  -webkit-animation-timing-function:ease-in-out;
+          animation-timing-function:ease-in-out;
+  -webkit-animation-fill-mode:forwards;
+          animation-fill-mode:forwards;
+  -webkit-animation-delay:0s, 1s;
+          animation-delay:0s, 1s;
+  -webkit-animation-iteration-count:1, infinite;
+          animation-iteration-count:1, infinite;
+  -webkit-animation-duration:1s, 2.61803s;
+          animation-duration:1s, 2.61803s;
+  transform:scale3d(0, 0, 0);
+}
+
+svg.sparkle use:first-child{
+  -webkit-animation-name:sparkle-initial, sparkle-group1;
+          animation-name:sparkle-initial, sparkle-group1;
+}
+
+svg.sparkle use:last-child{
+  -webkit-animation-name:sparkle-initial, sparkle-group2;
+          animation-name:sparkle-initial, sparkle-group2;
+}
+
+#sparkle-container{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+@-webkit-keyframes sparkle-initial{
+  from{
+    transform:scale3d(0, 0, 0);
+  }
+  to{
+    transform:scale3d(1, 1, 1);
+  }
+}
+
+@keyframes sparkle-initial{
+  from{
+    transform:scale3d(0, 0, 0);
+  }
+  to{
+    transform:scale3d(1, 1, 1);
+  }
+}
+
+@-webkit-keyframes sparkle-group1{
+  from{
+    transform:scale3d(1, 1, 1);
+  }
+  33%{
+    transform:scale3d(0.25, 0.25, 1);
+  }
+  66%{
+    transform:scale3d(0.5, 0.5, 1);
+  }
+  to{
+    transform:scale3d(1, 1, 1);
+  }
+}
+
+@keyframes sparkle-group1{
+  from{
+    transform:scale3d(1, 1, 1);
+  }
+  33%{
+    transform:scale3d(0.25, 0.25, 1);
+  }
+  66%{
+    transform:scale3d(0.5, 0.5, 1);
+  }
+  to{
+    transform:scale3d(1, 1, 1);
+  }
+}
+
+@-webkit-keyframes sparkle-group2{
+  from{
+    transform:scale3d(1, 1, 1);
+  }
+  33%{
+    transform:scale3d(0.5, 0.5, 1);
+  }
+  66%{
+    transform:scale3d(2, 2, 1);
+  }
+  to{
+    transform:scale3d(1, 1, 1);
+  }
+}
+
+@keyframes sparkle-group2{
+  from{
+    transform:scale3d(1, 1, 1);
+  }
+  33%{
+    transform:scale3d(0.5, 0.5, 1);
+  }
+  66%{
+    transform:scale3d(2, 2, 1);
+  }
+  to{
+    transform:scale3d(1, 1, 1);
+  }
+}
