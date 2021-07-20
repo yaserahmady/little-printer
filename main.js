@@ -8,6 +8,8 @@ import anime from 'animejs/lib/anime.es.js'
 
 var alphaOne = 1.0
 var alphaTwo = 0.2
+const loader = new THREE.TextureLoader()
+
 // Canvas
 const canvas = document.querySelector('.webgl')
 
@@ -49,6 +51,18 @@ gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
   model.position.y = -1.4
   scene.add(model)
 
+  const shadowMesh = new THREE.CircleGeometry(3, 128)
+
+  const shadowMaterial = new THREE.MeshBasicMaterial({
+    map: loader.load('public/little_printer/textures/shadow.png'),
+    depthWrite: false
+  })
+  shadowMaterial.transparent = true
+  const shadow = new THREE.Mesh(shadowMesh, shadowMaterial)
+  shadow.position.y = -1.5
+  shadow.rotation.x = -1.6
+  scene.add(shadow)
+
   model.castShadow = true
   model.receiveShadow = true
 
@@ -79,13 +93,53 @@ gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
       '<'
     )
     .to(camera.position, {
-      x: 0.3,
+      x: 1,
       y: 0.7,
       z: 5.4,
       duration: 1.4,
-      ease: 'expo.in'
+      ease: Elastic.easeOut.config(1, 0.4)
     })
-    .to(gradientParams, { position: 0, duration: 3, ease: 'expo.in' })
+    .to(
+      model.position,
+      {
+        x: 0.41,
+        y: model.position.y,
+        z: model.position.z,
+        duration: 1.4,
+        ease: Elastic.easeOut.config(1, 0.4)
+      },
+      '<'
+    )
+    .to(gradientParams, { position: 0, duration: 2, ease: 'expo.in' })
+    .to(
+      model.position,
+      {
+        x: 0.41,
+        y: 8.3,
+        z: model.position.z,
+        duration: 3,
+        ease: Elastic.easeIn.config(0.6, 1)
+      },
+      '<'
+    )
+    .to(
+      shadowMaterial,
+      {
+        opacity: 0,
+        duration: 3,
+        ease: Elastic.easeIn.config(0.6, 1)
+      },
+      '<'
+    )
+    .to(
+      'main',
+      {
+        y: -sizes.height,
+        duration: 3,
+        ease: Elastic.easeIn.config(0.6, 1)
+      },
+      '<'
+    )
 
   let whiteButtonMaterial = new THREE.MeshToonMaterial({
     color: 0xffffff
@@ -187,6 +241,7 @@ const renderer = new THREE.WebGLRenderer({
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
+controls.enabled = false
 
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
