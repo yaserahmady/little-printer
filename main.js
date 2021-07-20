@@ -8,6 +8,8 @@ import anime from 'animejs/lib/anime.es.js'
 
 var alphaOne = 1.0
 var alphaTwo = 0.2
+const loader = new THREE.TextureLoader()
+
 // Canvas
 const canvas = document.querySelector('.webgl')
 
@@ -48,6 +50,18 @@ gltfLoader.load('public/little_printer/scene.gltf', (gltf) => {
   model.scale.set(0.75, 0.75, 0.75)
   model.position.y = -1.4
   scene.add(model)
+
+  const shadowMesh = new THREE.CircleGeometry(3, 128)
+
+  const shadowMaterial = new THREE.MeshBasicMaterial({
+    map: loader.load('public/little_printer/textures/shadow.png'),
+    depthWrite: false
+  })
+  shadowMaterial.transparent = true
+  const shadow = new THREE.Mesh(shadowMesh, shadowMaterial)
+  shadow.position.y = -1.5
+  shadow.rotation.x = -1.6
+  scene.add(shadow)
 
   model.castShadow = true
   model.receiveShadow = true
