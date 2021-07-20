@@ -15,6 +15,7 @@ const canvas = document.querySelector('.webgl')
 
 // debug ui
 const gui = new dat.GUI({ closed: true })
+dat.GUI.toggleHide()
 
 //scene
 const scene = new THREE.Scene()
