@@ -135,7 +135,7 @@ gltfLoader.load('/assets/little_printer/scene.gltf', (gltf) => {
       },
       '-=1'
     )
-    .to(gradientParams, { position: 0, duration: 2, ease: 'expo.in' })
+    .to(gradientParams, { position: 0, duration: 2, ease: 'expo.in' }, '-=1')
     .to(
       model.position,
       {
@@ -179,7 +179,6 @@ gltfLoader.load('/assets/little_printer/scene.gltf', (gltf) => {
   })
 
   model.traverse((o) => {
-    console.log(o.name)
     if (o.name == 'Receipt_Mask_0') {
       o.material = paperMaterial
     } else if (o.name == 'Plate_Plate_0') {
